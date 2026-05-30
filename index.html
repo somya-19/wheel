@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>WHEEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:#0a0a0f; --card:#13131c; --border:rgba(255,255,255,0.08);
+    --c1:#ff4d6d; --c2:#ff9f1c; --c3:#ffd60a;
+    --c4:#06d6a0; --c5:#4cc9f0; --ca:#a855f7; --cb:#f72585;
+    --text:#f0f0f0; --muted:rgba(240,240,240,0.35);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+  body{
+    min-height:100dvh; background:var(--bg); color:var(--text);
+    font-family:'DM Mono',monospace; padding:0 0 30px;
+  }
+  body::before{
+    content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,77,109,0.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,77,109,0.03) 1px,transparent 1px);
+    background-size:36px 36px;
+  }
+  .wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 14px;}
+
+  /* HEADER */
+  .header{
+    padding:18px 0 14px;
+    display:flex;align-items:center;justify-content:space-between;
+    border-bottom:1px solid var(--border); margin-bottom:20px;
+  }
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:0.08em;}
+  .logo span{background:linear-gradient(120deg,#ff4d6d,#ffd60a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .total-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:#ffd60a;line-height:1;}
+  .total-label{font-size:9px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;text-align:right;}
+
+  /* SECTION LABEL */
+  .slabel{font-size:9px;letter-spacing:0.16em;color:var(--muted);text-transform:uppercase;margin-bottom:10px;}
+
+  /* INPUT ROW */
+  .input-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:22px;}
+  .inp-cell{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .inp-key{font-family:'Bebas Neue',sans-serif;font-size:20px;line-height:1;}
+  .inp-field{
+    width:100%;text-align:center;font-family:'DM Mono',monospace;
+    font-size:13px;font-weight:500;background:var(--card);
+    border:1px solid var(--border);border-radius:10px;
+    color:var(--text);padding:9px 2px;outline:none;
+    transition:border-color 0.18s;
+  }
+  .inp-field:focus{border-color:rgba(255,255,255,0.28);}
+
+  /* HIT BUTTONS */
+  .btn-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:24px;}
+  .hbtn{
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:3px;padding:14px 4px 12px;
+    border-radius:14px;border:1.5px solid var(--border);
+    background:var(--card);cursor:pointer;
+    position:relative;overflow:hidden;
+    transition:transform 0.1s;
+  }
+  .hbtn:active{transform:scale(0.9);}
+  .hbtn .bval{
+    font-family:'Bebas Neue',sans-serif;font-size:28px;line-height:1;
+    width:100%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 3px;
+  }
+  .hbtn .bkey{font-size:10px;color:var(--muted);letter-spacing:0.08em;}
+  .b1{border-color:rgba(255,77,109,0.3);}   .b1 .bval{color:var(--c1);}
+  .b2{border-color:rgba(255,159,28,0.3);}   .b2 .bval{color:var(--c2);}
+  .b3{border-color:rgba(255,214,10,0.3);}   .b3 .bval{color:var(--c3);}
+  .b4{border-color:rgba(6,214,160,0.3);}    .b4 .bval{color:var(--c4);}
+  .b5{border-color:rgba(76,201,240,0.3);}   .b5 .bval{color:var(--c5);}
+  .ba{border-color:rgba(168,85,247,0.3);}   .ba .bval{color:var(--ca);}
+  .bb{border-color:rgba(247,37,133,0.3);}   .bb .bval{color:var(--cb);}
+
+  /* ripple */
+  .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);transform:scale(0);animation:rpl 0.45s ease-out forwards;pointer-events:none;}
+  @keyframes rpl{to{transform:scale(5);opacity:0;}}
+
+  /* HISTORY */
+  .hist-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+  .clr-btn{
+    font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    background:rgba(255,77,109,0.08);border:1px solid rgba(255,77,109,0.3);
+    color:#ff4d6d;border-radius:8px;padding:5px 12px;cursor:pointer;font-family:inherit;
+  }
+  .hist-box{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;
+    padding:12px 14px;min-height:64px;
+    display:flex;align-items:center;
+    overflow-x:auto;gap:8px;flex-wrap:nowrap;
+    -webkit-overflow-scrolling:touch;
+  }
+  .hist-box::-webkit-scrollbar{display:none;}
+  .hist-empty-txt{font-size:11px;color:var(--muted);white-space:nowrap;}
+  .hchip{
+    flex-shrink:0;display:flex;flex-direction:column;align-items:center;
+    padding:6px 12px;border-radius:10px;border:1px solid;
+    animation:chipIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    background:rgba(255,255,255,0.04);
+  }
+  @keyframes chipIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .hchip .cv{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;}
+  .hchip .ck{font-size:9px;color:var(--muted);letter-spacing:0.08em;margin-top:2px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="header">
+    <div class="logo"><span>⬡ WHEEL</span></div>
+    <div>
+      <div class="total-label">Total hits</div>
+      <div class="total-num" id="total-num">0</div>
+    </div>
+  </div>
+
+  <p class="slabel">Set numbers</p>
+  <div class="input-row" id="input-row"></div>
+
+  <p class="slabel">Tap to hit</p>
+  <div class="btn-row" id="btn-row"></div>
+
+  <div class="hist-header">
+    <p class="slabel" style="margin:0">Hit history</p>
+    <button class="clr-btn" onclick="clearHistory()">Clear</button>
+  </div>
+  <div class="hist-box" id="hist-box">
+    <span class="hist-empty-txt" id="hist-empty">tap a number to start…</span>
+  </div>
+
+</div>
+<script>
+const KEYS=['1','2','3','4','5','a','b'];
+const COLORS={'1':'#ff4d6d','2':'#ff9f1c','3':'#ffd60a','4':'#06d6a0','5':'#4cc9f0','a':'#a855f7','b':'#f72585'};
+const BCLS={'1':'b1','2':'b2','3':'b3','4':'b4','5':'b5','a':'ba','b':'bb'};
+let vals={}, hits={}, total=0;
+KEYS.forEach(k=>{vals[k]='';hits[k]=0;});
+
+function buildInputs(){
+  const row=document.getElementById('input-row');
+  KEYS.forEach(k=>{
+    const c=document.createElement('div');
+    c.className='inp-cell';
+    c.innerHTML=`<span class="inp-key" style="color:${COLORS[k]}">${k.toUpperCase()}</span>
+      <input class="inp-field" id="inp-${k}" type="text" inputmode="numeric" placeholder="—" maxlength="6"
+        oninput="vals['${k}']=this.value.trim();updateBtn('${k}')"/>`;
+    row.appendChild(c);
+  });
+}
+
+function buildBtns(){
+  const row=document.getElementById('btn-row');
+  KEYS.forEach(k=>{
+    const b=document.createElement('button');
+    b.className=`hbtn ${BCLS[k]}`;
+    b.id=`hbtn-${k}`;
+    b.innerHTML=`<span class="bval" id="bval-${k}">—</span><span class="bkey">${k}</span>`;
+    b.addEventListener('pointerdown',e=>doRipple(b,e));
+    b.addEventListener('click',()=>recordHit(k));
+    row.appendChild(b);
+  });
+}
+
+function updateBtn(k){
+  const bv=document.getElementById(`bval-${k}`);
+  if(bv) bv.textContent=vals[k]||'—';
+}
+
+function recordHit(k){
+  total++;
+  document.getElementById('total-num').textContent=total;
+  document.getElementById('hist-empty').style.display='none';
+
+  const box=document.getElementById('hist-box');
+  const chip=document.createElement('div');
+  chip.className='hchip';
+  chip.style.borderColor=COLORS[k]+'55';
+  chip.style.color=COLORS[k];
+  chip.innerHTML=`<span class="cv">${vals[k]||k.toUpperCase()}</span><span class="ck">${k}</span>`;
+  box.insertBefore(chip, box.firstChild);
+
+  if(navigator.vibrate) navigator.vibrate(35);
+}
+
+function doRipple(btn,e){
+  const r=document.createElement('div');
+  r.className='ripple';
+  const rect=btn.getBoundingClientRect();
+  const s=Math.max(rect.width,rect.height);
+  r.style.cssText=`width:${s}px;height:${s}px;left:${e.clientX-rect.left-s/2}px;top:${e.clientY-rect.top-s/2}px`;
+  btn.appendChild(r);
+  setTimeout(()=>r.remove(),500);
+}
+
+function clearHistory(){
+  total=0;
+  document.getElementById('total-num').textContent='0';
+  const box=document.getElementById('hist-box');
+  box.querySelectorAll('.hchip').forEach(c=>c.remove());
+  document.getElementById('hist-empty').style.display='';
+}
+
+buildInputs(); buildBtns();
+</script>
+</body>
+</html>
