@@ -4,7 +4,7 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
-<title>WHEEL</title>
+<title>Big Wheel Fortune</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
   :root {
@@ -33,7 +33,7 @@
     display:flex;align-items:center;justify-content:space-between;
     border-bottom:1px solid var(--border); margin-bottom:20px;
   }
-  .logo{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:0.08em;}
+  .logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:0.06em;line-height:1.1;}
   .logo span{background:linear-gradient(120deg,#ff4d6d,#ffd60a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
   .total-num{font-family:'Bebas Neue',sans-serif;font-size:30px;color:#ffd60a;line-height:1;}
   .total-label{font-size:9px;letter-spacing:0.14em;color:var(--muted);text-transform:uppercase;text-align:right;}
@@ -70,13 +70,13 @@
     width:100%;text-align:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 3px;
   }
   .hbtn .bkey{font-size:10px;color:var(--muted);letter-spacing:0.08em;}
-  .b1{border-color:rgba(255,77,109,0.3);}   .b1 .bval{color:var(--c1);}
-  .b2{border-color:rgba(255,159,28,0.3);}   .b2 .bval{color:var(--c2);}
-  .b3{border-color:rgba(255,214,10,0.3);}   .b3 .bval{color:var(--c3);}
-  .b4{border-color:rgba(6,214,160,0.3);}    .b4 .bval{color:var(--c4);}
-  .b5{border-color:rgba(76,201,240,0.3);}   .b5 .bval{color:var(--c5);}
-  .ba{border-color:rgba(168,85,247,0.3);}   .ba .bval{color:var(--ca);}
-  .bb{border-color:rgba(247,37,133,0.3);}   .bb .bval{color:var(--cb);}
+  .b1{background:#ff4d6d;border-color:#ff4d6d;}  .b1 .bval{color:#fff;} .b1 .bkey{color:rgba(255,255,255,0.6);}
+  .b2{background:#ff9f1c;border-color:#ff9f1c;}  .b2 .bval{color:#fff;} .b2 .bkey{color:rgba(255,255,255,0.6);}
+  .b3{background:#e6c000;border-color:#e6c000;}  .b3 .bval{color:#fff;} .b3 .bkey{color:rgba(255,255,255,0.6);}
+  .b4{background:#06d6a0;border-color:#06d6a0;}  .b4 .bval{color:#fff;} .b4 .bkey{color:rgba(255,255,255,0.6);}
+  .b5{background:#4cc9f0;border-color:#4cc9f0;}  .b5 .bval{color:#fff;} .b5 .bkey{color:rgba(255,255,255,0.6);}
+  .ba{background:#a855f7;border-color:#a855f7;}  .ba .bval{color:#fff;} .ba .bkey{color:rgba(255,255,255,0.6);}
+  .bb{background:#f72585;border-color:#f72585;}  .bb .bval{color:#fff;} .bb .bkey{color:rgba(255,255,255,0.6);}
 
   /* ripple */
   .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.22);transform:scale(0);animation:rpl 0.45s ease-out forwards;pointer-events:none;}
@@ -100,20 +100,19 @@
   .hist-empty-txt{font-size:11px;color:var(--muted);white-space:nowrap;}
   .hchip{
     flex-shrink:0;display:flex;flex-direction:column;align-items:center;
-    padding:6px 12px;border-radius:10px;border:1px solid;
+    padding:6px 12px;border-radius:10px;border:none;
     animation:chipIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    background:rgba(255,255,255,0.04);
   }
   @keyframes chipIn{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
-  .hchip .cv{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;}
-  .hchip .ck{font-size:9px;color:var(--muted);letter-spacing:0.08em;margin-top:2px;}
+  .hchip .cv{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;color:#fff;}
+  .hchip .ck{font-size:9px;color:rgba(255,255,255,0.65);letter-spacing:0.08em;margin-top:2px;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <div class="header">
-    <div class="logo"><span>⬡ WHEEL</span></div>
+    <div class="logo"><span>BIG WHEEL FORTUNE</span></div>
     <div>
       <div class="total-label">Total hits</div>
       <div class="total-num" id="total-num">0</div>
@@ -180,8 +179,7 @@ function recordHit(k){
   const box=document.getElementById('hist-box');
   const chip=document.createElement('div');
   chip.className='hchip';
-  chip.style.borderColor=COLORS[k]+'55';
-  chip.style.color=COLORS[k];
+  chip.style.background = COLORS[k];
   chip.innerHTML=`<span class="cv">${vals[k]||k.toUpperCase()}</span><span class="ck">${k}</span>`;
   box.insertBefore(chip, box.firstChild);
 
